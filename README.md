@@ -1,3 +1,7 @@
+This is dervived from the Cloud Foundry cflinuxfs3 build with some
+additional packages added on.  Below is the original README.md.
+
+
 Cloud Foundry stack: cflinuxfs3
 ====================
 
