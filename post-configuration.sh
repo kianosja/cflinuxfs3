@@ -91,3 +91,13 @@ echo ""
 curl -k -s -Lo /usr/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
 chmod uog+rx /usr/bin/kubectl
 
+#
+## Install jfrog cli
+#
+
+echo "Installing jfrog cli"
+echo ""
+curl -fL https://getcli.jfrog.io | sh
+mv jfrog /usr/bin/jfrog
+chmod uog+rx /usr/bin/jfrog
+
