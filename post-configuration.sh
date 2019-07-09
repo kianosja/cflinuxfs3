@@ -16,10 +16,13 @@ chmod 755 /usr/bin/mc
 
 echo ""
 echo "Installing bosh 5.4.0"
-#VER=`curl -k -s https://s3.amazonaws.com/bosh-cli-artifacts/cli-current-version`
 VER="5.4.0"
 curl -k -s -Lo /usr/bin/bosh https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-${VER}-linux-amd64
 chmod 755 /usr/bin/bosh
+VER=`curl -k -s https://s3.amazonaws.com/bosh-cli-artifacts/cli-current-version`
+echo "Installing latest bosh version ($VER) as bosh-latest"
+curl -k -s -Lo /usr/bin/bosh-latest https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-${VER}-linux-amd64
+chmod 755 /usr/bin/bosh-latest
 
 echo ""
 echo "Installing govc 0.15.0"
@@ -31,9 +34,9 @@ chmod 755 /usr/bin/govc
 
 # Now get the latest version for testing
 
-echo "Installing latest govc as /usr/bin/govc-latest" 
-echo ""
 VER=`curl -L -k -s https://github.com/vmware/govmomi/releases/latest | grep "<title>Release" | awk '{ print $2 }'`
+echo "Installing latest govc ($VER) as /usr/bin/govc-latest" 
+echo ""
 curl -k -s -Lo /tmp/govc.gz https://github.com/vmware/govmomi/releases/download/${VER}/govc_linux_amd64.gz
 gzip -d /tmp/govc.gz
 chmod 755 /tmp/govc
@@ -48,9 +51,9 @@ chmod 755 /usr/bin/om-linux
 
 # Now install the latest
 
-echo "Installing latest om-linux as om-linux-latest"
-echo ""
 VER=`curl -L -k -s https://github.com/pivotal-cf/om/releases/latest | grep "<title>Release" | awk '{ print $2 }'`
+echo "Installing latest ($VER) om-linux as om-linux-latest"
+echo ""
 curl -k -s -Lo /tmp/om-linux https://github.com/pivotal-cf/om/releases/download/${VER}/om-linux
 chmod 755 /tmp/om-linux
 mv /tmp/om-linux /usr/bin/om-linux-latest
