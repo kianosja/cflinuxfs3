@@ -19,8 +19,10 @@ echo "Installing bosh 5.4.0"
 VER="5.4.0"
 curl -k -s -Lo /usr/bin/bosh https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-${VER}-linux-amd64
 chmod 755 /usr/bin/bosh
-VER=`curl -k -s https://s3.amazonaws.com/bosh-cli-artifacts/cli-current-version`
-echo "Installing latest bosh version ($VER) as bosh-latest"
+#VER=`curl -k -s https://s3.amazonaws.com/bosh-cli-artifacts/cli-current-version`
+#echo "Installing latest bosh version ($VER) as bosh-latest"
+echo "Temporarily locking bosh-latest at 5.5.1 until latest issue with cli-current-version file is fixed"
+VER="5.5.1"
 curl -k -s -Lo /usr/bin/bosh-latest https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-${VER}-linux-amd64
 chmod 755 /usr/bin/bosh-latest
 
@@ -50,11 +52,13 @@ curl -k -s -Lo /usr/bin/om-linux https://github.com/pivotal-cf/om/releases/downl
 chmod 755 /usr/bin/om-linux
 
 # Now install the latest
+#
+# Note binary name changed at 2.2.0 to om-linux-VER
 
 VER=`curl -L -k -s https://github.com/pivotal-cf/om/releases/latest | grep "<title>Release" | awk '{ print $2 }'`
 echo "Installing latest ($VER) om-linux as om-linux-latest"
 echo ""
-curl -k -s -Lo /tmp/om-linux https://github.com/pivotal-cf/om/releases/download/${VER}/om-linux
+curl -k -s -Lo /tmp/om-linux https://github.com/pivotal-cf/om/releases/download/${VER}/om-linux-${VER}
 chmod 755 /tmp/om-linux
 mv /tmp/om-linux /usr/bin/om-linux-latest
 
