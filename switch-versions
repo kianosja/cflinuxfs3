@@ -1,0 +1,32 @@
+#!/bin/bash
+
+##
+## switch-versions
+##
+## Switches versions to make -latest and -test the defaultversion
+##
+
+display_usage () {
+	echo "switch-versions latest|test"
+	echo ""
+	echo "Switches bosh, govc, om-linux, and jq to their latest or test versions."
+	echo "To switch bosh to test and all others to latest, you will need to run"
+	echo "switch-versions twice, first with latest and then with test."
+	echo ""
+	exit 1
+}
+
+if [ -z "$1" ]; then
+	display_usage()
+elif [ "$1" = "latest" ]; then
+	mv /usr/bin/bosh-latest /usr/bin/bosh
+	mv /usr/bin/govc-latest /usr/bin/govc
+	mv /usr/bin/om-linux-latest /usr/bin/om-linux
+	mv /usr/bin/jq-latest /usr/bin/jq
+elif [ "$1" = "test" ]; then
+	mv /usr/bin/bosh-test /usr/bin/bosh
+else
+	display_usage()
+fi
+
+

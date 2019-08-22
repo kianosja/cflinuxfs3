@@ -1,34 +1,53 @@
 #!/bin/bash
 
+##
+## Install cf-cli and dnsutils (per Kirk + Brandon)
+##
+
 echo ""
 echo "Installing latest cf-cli"
 wget -q -O - https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key | apt-key add -
 echo "deb https://packages.cloudfoundry.org/debian stable main" | tee /etc/apt/sources.list.d/cloudfoundry-cli.list
 apt-get update
 apt-get install cf-cli
-
+apt-get install dnsutils
 apt-get clean
+
+##
+## Install mc
+##
 
 echo ""
 echo "Installing latest mc"
 wget --no-check-certificate -q -O /usr/bin/mc https://dl.minio.io/client/mc/release/linux-amd64/mc
 chmod 755 /usr/bin/mc
 
+##
+## Install bosh
+##
+
 echo ""
 echo "Installing bosh 5.4.0"
 VER="5.4.0"
 curl -k -s -Lo /usr/bin/bosh https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-${VER}-linux-amd64
 chmod 755 /usr/bin/bosh
-#VER=`curl -k -s https://s3.amazonaws.com/bosh-cli-artifacts/cli-current-version`
-#echo "Installing latest bosh version ($VER) as bosh-latest"
+
 echo "Temporarily locking bosh-latest at 5.5.1 until latest issue with cli-current-version file is fixed"
 VER="5.5.1"
 curl -k -s -Lo /usr/bin/bosh-latest https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-${VER}-linux-amd64
 chmod 755 /usr/bin/bosh-latest
 
+echo "Installing latest bosh version ($VER) as bosh-test"
+VER=`curl -k -s https://s3.amazonaws.com/bosh-cli-artifacts/cli-current-version`
+curl -k -s -Lo /usr/bin/bosh-latest https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-${VER}-linux-amd64
+chmod 755 /usr/bin/bosh-test
+
+##
+## Install govc
+##
+
 echo ""
 echo "Installing govc 0.15.0"
-#VER=`curl -L -k -s https://github.com/vmware/govmomi/releases/latest | grep "<title>Release" | awk '{ print $2 }'`
 VER="v0.15.0"
 curl -k -s -Lo /usr/bin/govc.gz https://github.com/vmware/govmomi/releases/download/${VER}/govc_linux_amd64.gz
 gzip -d /usr/bin/govc.gz
@@ -43,6 +62,10 @@ curl -k -s -Lo /tmp/govc.gz https://github.com/vmware/govmomi/releases/download/
 gzip -d /tmp/govc.gz
 chmod 755 /tmp/govc
 mv /tmp/govc /usr/bin/govc-latest
+
+##
+## Install om-linux
+##
 
 echo ""
 echo "Installing om-linux 0.42.0"
