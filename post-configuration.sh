@@ -38,7 +38,9 @@ curl -k -s -Lo /usr/bin/bosh-latest https://s3.amazonaws.com/bosh-cli-artifacts/
 chmod 755 /usr/bin/bosh-latest
 
 echo "Installing latest bosh version ($VER) as bosh-test"
-VER=`curl -k -s https://s3.amazonaws.com/bosh-cli-artifacts/cli-current-version`
+#VER=`curl -k -s https://s3.amazonaws.com/bosh-cli-artifacts/cli-current-version`
+#Get latest off github instead
+VER=`curl -Ls -o /dev/null -w %{url_effective} https://github.com/cloudfoundry/bosh-cli/releases/latest | awk -F / '{ print $NF }' | cut -c 2-`
 curl -k -s -Lo /usr/bin/bosh-latest https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-${VER}-linux-amd64
 chmod 755 /usr/bin/bosh-test
 
