@@ -17,7 +17,7 @@ display_usage () {
 }
 
 if [ -z "$1" ]; then
-	display_usage()
+	display_usage
 elif [ "$1" = "latest" ]; then
 	mv /usr/bin/bosh-latest /usr/bin/bosh
 	mv /usr/bin/govc-latest /usr/bin/govc
@@ -26,7 +26,7 @@ elif [ "$1" = "latest" ]; then
 elif [ "$1" = "test" ]; then
 	mv /usr/bin/bosh-test /usr/bin/bosh
 else
-	display_usage()
+	display_usage
 fi
 
 
