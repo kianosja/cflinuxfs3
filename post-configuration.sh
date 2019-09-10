@@ -138,6 +138,9 @@ chmod uog+rx /usr/bin/jfrog
 echo "Installing latest credhub-cli"
 echo ""
 VER=`curl -Ls -o /dev/null -w %{url_effective} https://github.com/cloudfoundry-incubator/credhub-cli/releases/latest | awk -F / '{ print $NF }'`
-curl -k -s -Lo /usr/bin/credhub https://github.com/cloudfoundry-incubator/credhub-cli/releases/download/${VER}/credhub-linux-${VER}.tgz
+curl -k -s -Lo ./credhub.tar.gz https://github.com/cloudfoundry-incubator/credhub-cli/releases/download/${VER}/credhub-linux-${VER}.tgz
+tar xvzf credhub.tar.gz 
+mv credhub /usr/bin/credhub
+rm credhub.tar
 chmod 755 /usr/bin/credhub
 
