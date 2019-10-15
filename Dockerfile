@@ -8,7 +8,7 @@ apt-get -y update && \
 apt-get -y install $PACKAGES && \
 apt-get clean
  
-RUN bash post-configuration.sh
-RUN cp tag /etc/tag
-RUN cp switch-versions /usr/bin/switch-versions
+RUN cp tag /etc/tag && \
+cp switch-versions /usr/bin/switch-versions && \
+bash post-configuration.sh
 
