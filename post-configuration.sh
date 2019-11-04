@@ -12,6 +12,7 @@ apt-get update
 apt-get install cf-cli
 apt-get install dnsutils
 apt-get install gettext-base
+apt-get install bind9utils
 apt-get clean
 
 ##
