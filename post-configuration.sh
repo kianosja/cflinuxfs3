@@ -11,6 +11,7 @@ echo "deb https://packages.cloudfoundry.org/debian stable main" | tee /etc/apt/s
 apt-get update
 apt-get install cf-cli
 apt-get install dnsutils
+apt-get install gettext-base
 apt-get clean
 
 ##
