@@ -9,10 +9,10 @@ echo "Installing latest cf-cli"
 wget -q -O - https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key | apt-key add -
 echo "deb https://packages.cloudfoundry.org/debian stable main" | tee /etc/apt/sources.list.d/cloudfoundry-cli.list
 apt-get update
-apt-get install cf-cli
-apt-get install dnsutils
-apt-get install gettext-base
-apt-get install bind9utils
+apt-get install -y cf-cli
+apt-get install -y dnsutils
+apt-get install -y gettext-base
+apt-get install -y bind9utils
 apt-get clean
 
 ##
