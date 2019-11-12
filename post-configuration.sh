@@ -29,41 +29,44 @@ chmod 755 /usr/bin/mc
 ##
 
 echo ""
-echo "Installing bosh 5.4.0"
+echo "Installing bosh 5.4.0 as bosh-5.4.0 (was bosh)"
 VER="5.4.0"
+curl -k -s -Lo /usr/bin/bosh-5.4.0 https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-${VER}-linux-amd64
+chmod 755 /usr/bin/bosh-5.4.0
+
+echo "Installing bosh 5.5.1 as bosh-5.5.1 (was bosh-latest)"
+VER="5.5.1"
+curl -k -s -Lo /usr/bin/bosh-5.5.1 https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-${VER}-linux-amd64
+chmod 755 /usr/bin/bosh-5.5.1
+
+VER=`curl -Ls -o /dev/null -w %{url_effective} https://github.com/cloudfoundry/bosh-cli/releases/latest | awk -F / '{ print $NF }' | cut -c 2-`
+echo "Installing latest bosh version ($VER) as bosh (was bosh-test)"
 curl -k -s -Lo /usr/bin/bosh https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-${VER}-linux-amd64
 chmod 755 /usr/bin/bosh
-
-echo "Temporarily locking bosh-latest at 5.5.1 until latest issue with cli-current-version file is fixed"
-VER="5.5.1"
-curl -k -s -Lo /usr/bin/bosh-latest https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-${VER}-linux-amd64
-chmod 755 /usr/bin/bosh-latest
-
-echo "Installing latest bosh version ($VER) as bosh-test"
-VER=`curl -Ls -o /dev/null -w %{url_effective} https://github.com/cloudfoundry/bosh-cli/releases/latest | awk -F / '{ print $NF }' | cut -c 2-`
-curl -k -s -Lo /usr/bin/bosh-test https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-${VER}-linux-amd64
-chmod 755 /usr/bin/bosh-test
+ln -s /usr/bin/bosh /usr/bin/bosh-latest
 
 ##
 ## Install govc
 ##
 
 echo ""
-echo "Installing govc 0.15.0"
+echo "Installing govc 0.15.0 as govc-0.15.0"
 VER="v0.15.0"
 curl -k -s -Lo /usr/bin/govc.gz https://github.com/vmware/govmomi/releases/download/${VER}/govc_linux_amd64.gz
 gzip -d /usr/bin/govc.gz
 chmod 755 /usr/bin/govc
+mv /usr/bin/govc /usr/bin/govc-0.15.0
 
 # Now get the latest version for testing
 
-VER=`curl -L -k -s https://github.com/vmware/govmomi/releases/latest | grep "<title>Release" | awk '{ print $2 }'`
-echo "Installing latest govc ($VER) as /usr/bin/govc-latest" 
+#VER=`curl -L -k -s https://github.com/vmware/govmomi/releases/latest | grep "<title>Release" | awk '{ print $2 }'`
+VER=`curl -Ls -o /dev/null -w %{url_effective} https://github.com/vmware/govmomi/releases/latest | awk -F / '{ print $NF }' | cut -c 2-`
+echo "Installing latest govc ($VER) as /usr/bin/govc (was govc-latest)" 
 echo ""
-curl -k -s -Lo /tmp/govc.gz https://github.com/vmware/govmomi/releases/download/${VER}/govc_linux_amd64.gz
-gzip -d /tmp/govc.gz
-chmod 755 /tmp/govc
-mv /tmp/govc /usr/bin/govc-latest
+curl -k -s -Lo /usr/bin/govc.gz https://github.com/vmware/govmomi/releases/download/${VER}/govc_linux_amd64.gz
+gzip -d /usr/bin/govc.gz
+chmod 755 /usr/bin/govc
+ln -s /usr/bin/govc /usr/bin/govc-latest
 
 ##
 ## Install om-linux
@@ -71,33 +74,34 @@ mv /tmp/govc /usr/bin/govc-latest
 
 echo ""
 echo "Installing om-linux 0.42.0"
-#VER=`curl -L -k -s https://github.com/pivotal-cf/om/releases/latest | grep "<title>Release" | awk '{ print $2 }'`
 VER="0.42.0"
 curl -k -s -Lo /usr/bin/om-linux https://github.com/pivotal-cf/om/releases/download/${VER}/om-linux
-chmod 755 /usr/bin/om-linux
+chmod 755 /usr/bin/om-linux-0.42.0
 
 # Now install the latest
 #
 # Note binary name changed at 2.2.0 to om-linux-VER
 
-VER=`curl -L -k -s https://github.com/pivotal-cf/om/releases/latest | grep "<title>Release" | awk '{ print $2 }'`
-echo "Installing latest ($VER) om-linux as om-linux-latest"
+#VER=`curl -L -k -s https://github.com/pivotal-cf/om/releases/latest | grep "<title>Release" | awk '{ print $2 }'`
+VER=`curl -Ls -o /dev/null -w %{url_effective} https://github.com/pivotal-cf/om/releases/latest | awk -F / '{ print $NF }' | cut -c 2-`
+echo "Installing latest ($VER) om-linux as /usr/bin/om-linux (was om-linux-latest)"
 echo ""
-curl -k -s -Lo /tmp/om-linux https://github.com/pivotal-cf/om/releases/download/${VER}/om-linux-${VER}
-chmod 755 /tmp/om-linux
-mv /tmp/om-linux /usr/bin/om-linux-latest
+curl -k -s -Lo /usr/bin/om-linux https://github.com/pivotal-cf/om/releases/download/${VER}/om-linux-${VER}
+chmod 755 /usr/bin/om-linux
+ln -s /usr/bin/om-linux /usr/bin/om-linux-latest
 
 echo ""
-echo "Installing jq-1.5"
-curl -k -s -Lo /usr/bin/jq https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64
-chmod 755 /usr/bin/jq
+echo "Installing jq 1.5 as jq-1.5"
+curl -k -s -Lo /usr/bin/jq-1.5 https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64
+chmod 755 /usr/bin/jq-1.5
 
 # Now install the latest
 
-echo "Installing latest jq as jq-latest"
+VER=`curl -Ls -o /dev/null -w %{url_effective} https://github.com/stedolan/jq/releases/latest | grep "<title>Release" | awk '{ print $2 }'`
+echo "Installing latest jq ($VER) as /usr/bin/jq (was jq-latest)"
 echo ""
-curl -k -s -Lo /usr/bin/jq-latest https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
-chmod 755 /usr/bin/jq-latest
+curl -k -s -Lo /usr/bin/jq https://github.com/stedolan/jq/releases/download/jq-${VER}/jq-linux64
+chmod 755 /usr/bin/jq
 
 echo ""
 echo "Installing latest aws"
