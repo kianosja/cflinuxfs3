@@ -60,7 +60,7 @@ mv /usr/bin/govc /usr/bin/govc-0.15.0
 # Now get the latest version for testing
 
 #VER=`curl -L -k -s https://github.com/vmware/govmomi/releases/latest | grep "<title>Release" | awk '{ print $2 }'`
-VER=`curl -Ls -o /dev/null -w %{url_effective} https://github.com/vmware/govmomi/releases/latest | awk -F / '{ print $NF }' | cut -c 2-`
+VER=`curl -Ls -o /dev/null -w %{url_effective} https://github.com/vmware/govmomi/releases/latest | awk -F / '{ print $NF }'`
 echo "Installing latest govc ($VER) as /usr/bin/govc (was govc-latest)" 
 echo ""
 curl -k -s -Lo /usr/bin/govc.gz https://github.com/vmware/govmomi/releases/download/${VER}/govc_linux_amd64.gz
@@ -75,7 +75,7 @@ ln -s /usr/bin/govc /usr/bin/govc-latest
 echo ""
 echo "Installing om-linux 0.42.0"
 VER="0.42.0"
-curl -k -s -Lo /usr/bin/om-linux https://github.com/pivotal-cf/om/releases/download/${VER}/om-linux
+curl -k -s -Lo /usr/bin/om-linux-0.42.0 https://github.com/pivotal-cf/om/releases/download/${VER}/om-linux
 chmod 755 /usr/bin/om-linux-0.42.0
 
 # Now install the latest
@@ -83,7 +83,7 @@ chmod 755 /usr/bin/om-linux-0.42.0
 # Note binary name changed at 2.2.0 to om-linux-VER
 
 #VER=`curl -L -k -s https://github.com/pivotal-cf/om/releases/latest | grep "<title>Release" | awk '{ print $2 }'`
-VER=`curl -Ls -o /dev/null -w %{url_effective} https://github.com/pivotal-cf/om/releases/latest | awk -F / '{ print $NF }' | cut -c 2-`
+VER=`curl -Ls -o /dev/null -w %{url_effective} https://github.com/pivotal-cf/om/releases/latest | awk -F / '{ print $NF }'`
 echo "Installing latest ($VER) om-linux as /usr/bin/om-linux (was om-linux-latest)"
 echo ""
 curl -k -s -Lo /usr/bin/om-linux https://github.com/pivotal-cf/om/releases/download/${VER}/om-linux-${VER}
@@ -97,10 +97,10 @@ chmod 755 /usr/bin/jq-1.5
 
 # Now install the latest
 
-VER=`curl -Ls -o /dev/null -w %{url_effective} https://github.com/stedolan/jq/releases/latest | grep "<title>Release" | awk '{ print $2 }'`
+VER=`curl -Ls -o /dev/null -w %{url_effective} https://github.com/stedolan/jq/releases/latest | awk -F / '{ print $NF }'`
 echo "Installing latest jq ($VER) as /usr/bin/jq (was jq-latest)"
 echo ""
-curl -k -s -Lo /usr/bin/jq https://github.com/stedolan/jq/releases/download/jq-${VER}/jq-linux64
+curl -k -s -Lo /usr/bin/jq https://github.com/stedolan/jq/releases/download/${VER}/jq-linux64
 chmod 755 /usr/bin/jq
 
 echo ""
@@ -147,6 +147,6 @@ VER=`curl -Ls -o /dev/null -w %{url_effective} https://github.com/cloudfoundry-i
 curl -k -s -Lo ./credhub.tar.gz https://github.com/cloudfoundry-incubator/credhub-cli/releases/download/${VER}/credhub-linux-${VER}.tgz
 tar xvzf credhub.tar.gz 
 mv credhub /usr/bin/credhub
-rm credhub.tar
+rm credhub.tar.gz
 chmod 755 /usr/bin/credhub
 
