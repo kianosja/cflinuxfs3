@@ -146,3 +146,21 @@ mv credhub /usr/bin/credhub
 rm credhub.tar
 chmod 755 /usr/bin/credhub
 
+#
+### Install cf-mgmt binaries
+#
+
+# This version will be locked down as a change to the .yml could blow up automation
+
+VER="v1.0.36"
+
+echo "Installing cf-mgmt ${VER}"
+echo ""
+
+curl -k -s -Lo /usr/bin/cf-mgmt-config https://github.com/pivotalservices/cf-mgmt/releases/download/${VER}/cf-mgmt-config-linux
+
+curl -k -so -Lo /usr/bin/cf-mgmt https://github.com/pivotalservices/cf-mgmt/releases/download/${VER}/cf-mgmt-linux
+
+chmod 755 /usr/bin/cf-mgmt-config
+chmod 755 /usr/bin/cf-mgmt
+
