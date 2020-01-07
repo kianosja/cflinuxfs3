@@ -118,10 +118,10 @@ gem install cf-uaac
 ## Install kubernetes packages
 #
 
-echo "Installing latest kubectl"
-echo ""
-curl -k -s -Lo /usr/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
-chmod uog+rx /usr/bin/kubectl
+#echo "Installing latest kubectl"
+#echo ""
+#curl -k -s -Lo /usr/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+#chmod uog+rx /usr/bin/kubectl
 
 #
 ## Install jfrog cli
