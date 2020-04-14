@@ -87,6 +87,10 @@ curl -k -s -Lo /tmp/om-linux https://github.com/pivotal-cf/om/releases/download/
 chmod 755 /tmp/om-linux
 mv /tmp/om-linux /usr/bin/om-linux-latest
 
+#
+## Install jq
+# 
+
 echo ""
 echo "Installing jq-1.5"
 curl -k -s -Lo /usr/bin/jq https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64
@@ -98,6 +102,22 @@ echo "Installing latest jq as jq-latest"
 echo ""
 curl -k -s -Lo /usr/bin/jq-latest https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
 chmod 755 /usr/bin/jq-latest
+
+#
+## Install yq
+#
+
+echo 
+VER=$( curl -Ls -o /dev/null -w %{url_effective} https://github.com/mikefarah/yq/releases/latest | awk -F / '{ print $NF }' )
+echo "Installing yq-${VER}"
+echo
+
+curl -k -s -Lo /usr/bin/yq https://github.com/mikefarah/yq/releases/download/${VER}/yq_linux_amd64
+chmod 755 /usr/bin/yq
+
+#
+## Install awscli
+#
 
 echo ""
 echo "Installing latest aws"
