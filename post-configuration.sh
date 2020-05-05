@@ -157,10 +157,31 @@ chmod uog+rx /usr/bin/jfrog
 ### Install credhub-cli
 #
 
-echo "Installing latest credhub-cli"
-echo ""
 VER=`curl -Ls -o /dev/null -w %{url_effective} https://github.com/cloudfoundry-incubator/credhub-cli/releases/latest | awk -F / '{ print $NF }'`
+echo "Installing latest credhub-cli ${VER}"
+echo ""
 curl -k -s -Lo ./credhub.tar.gz https://github.com/cloudfoundry-incubator/credhub-cli/releases/download/${VER}/credhub-linux-${VER}.tgz
 tar xvzf credhub.tar.gz 
 mv credhub /usr/bin/credhub
 chmod 755 /usr/bin/credhub
+
+#
+### Install ytt
+#
+
+VER=`curl -Ls -o /dev/null -w %{url_effective} https://github.com/k14s/ytt/releases/latest | awk -F / '{ print $NF }'`
+echo "Installing latest ytt (${VER}"
+echo
+curl -k -s -Lo /usr/bin/ytt https://github.com/k14s/ytt/releases/download/${VER}/ytt-linux-amd64
+chmod 644 /usr/bin/ytt
+
+#
+### Install kapp
+#
+
+VER=`curl -Ls -o /dev/null -w %{url_effective} https://github.com/k14s/kapp/releases/latest | awk -F / '{ print $NF }'`
+echo "Installing latest kapp (${VER}"
+echo
+curl -k -s -Lo /usr/bin/kapp https://github.com/k14s/kapp/releases/download/${VER}/kapp-linux-amd64
+chmod 644 /usr/bin/kapp
+
