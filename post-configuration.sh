@@ -173,7 +173,7 @@ VER=`curl -Ls -o /dev/null -w %{url_effective} https://github.com/k14s/ytt/relea
 echo "Installing latest ytt (${VER}"
 echo
 curl -k -s -Lo /usr/bin/ytt https://github.com/k14s/ytt/releases/download/${VER}/ytt-linux-amd64
-chmod 644 /usr/bin/ytt
+chmod 755 /usr/bin/ytt
 
 #
 ### Install kapp
@@ -183,5 +183,5 @@ VER=`curl -Ls -o /dev/null -w %{url_effective} https://github.com/k14s/kapp/rele
 echo "Installing latest kapp (${VER}"
 echo
 curl -k -s -Lo /usr/bin/kapp https://github.com/k14s/kapp/releases/download/${VER}/kapp-linux-amd64
-chmod 644 /usr/bin/kapp
+chmod 755 /usr/bin/kapp
 
