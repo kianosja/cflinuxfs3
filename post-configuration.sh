@@ -80,7 +80,8 @@ chmod 755 /usr/bin/om-linux
 #
 # Note binary name changed at 2.2.0 to om-linux-VER
 
-VER=`curl -L -k -s https://github.com/pivotal-cf/om/releases/latest | grep "<title>Release" | awk '{ print $2 }'`
+#VER=`curl -L -k -s https://github.com/pivotal-cf/om/releases/latest | grep "<title>Release" | awk '{ print $2 }'`
+VER=4.8.0
 echo "Installing latest ($VER) om-linux as om-linux-latest"
 echo ""
 curl -k -s -Lo /tmp/om-linux https://github.com/pivotal-cf/om/releases/download/${VER}/om-linux-${VER}
