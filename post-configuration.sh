@@ -16,6 +16,19 @@ apt-get install -y bind9utils
 apt-get clean
 
 ##
+## Install skopeo
+##
+
+echo ""
+echo "Installing latest skopeo"
+. /etc/os-release
+echo "deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_${VERSION_ID}/ /" | tee /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list
+curl -L https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_${VERSION_ID}/Release.key | apt-key add -
+apt update
+apt -y install skopeo
+apt clean
+
+##
 ## Install mc
 ##
 
@@ -185,4 +198,25 @@ echo "Installing latest kapp (${VER}"
 echo
 curl -k -s -Lo /usr/bin/kapp https://github.com/k14s/kapp/releases/download/${VER}/kapp-linux-amd64
 chmod 755 /usr/bin/kapp
+
+#
+### Install oc
+#
+
+echo "Installing latest oc"
+echo
+curl -k -s -Lo openshift-client-linux.tar.gz https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-client-linux.tar.gz
+tar xvzf openshift-client-linux.tar.gz
+cp oc /usr/bin/oc
+chmod 755 /usr/bin/oc
+rm kubectl
+rm README*
+
+#
+### Install skopeo
+#
+
+VER=`curl -Ls -o /dev/null -w %{url_effective} https://github.com/containers/skopeo/releases/latest | awk -F / '{ print $NF }'`
+echo "Installing latest skopeo (${VER})"
+echo
 
