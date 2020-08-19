@@ -13,6 +13,7 @@ apt-get install -y cf-cli
 apt-get install -y dnsutils
 apt-get install -y gettext-base
 apt-get install -y bind9utils
+apt-get install -y python3-pip
 apt-get clean
 
 ##
