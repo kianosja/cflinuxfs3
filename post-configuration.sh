@@ -221,3 +221,13 @@ VER=`curl -Ls -o /dev/null -w %{url_effective} https://github.com/containers/sko
 echo "Installing latest skopeo (${VER})"
 echo
 
+#
+### Install hub
+#
+
+VER=`curl -Ls -o /dev/null -w %{url_effective} https://github.com/github/hub/releases/latest | awk -F / '{ print $NF }'`
+echo "Installing latest hub (${VER})"
+echo 
+curl -k -s -Lo /usr/bin/hub https://github.com/github/hub/releases/download/${VER}/hub-linux-amd64-${VER}.tgz
+chmod 755 /usr/bin/hub
+
