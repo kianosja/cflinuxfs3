@@ -226,8 +226,11 @@ echo
 #
 
 VER=`curl -Ls -o /dev/null -w %{url_effective} https://github.com/github/hub/releases/latest | awk -F / '{ print $NF }'`
+VER_NO_V=$(echo ${VER} | cut -c 2-)
 echo "Installing latest hub (${VER})"
 echo 
-curl -k -s -Lo /usr/bin/hub https://github.com/github/hub/releases/download/${VER}/hub-linux-amd64-${VER}.tgz
+curl -k -s -Lo hub.tar.gz https://github.com/github/hub/releases/download/${VER}/hub-linux-amd64-${VER_NO_V}.tgz
+tar xvzf hub.tar.gz
+cp hub-linux-amd64-${VER_NO_V}/bin/hub /usr/bin/hub
 chmod 755 /usr/bin/hub
 
