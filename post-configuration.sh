@@ -119,7 +119,7 @@ curl -k -s -Lo /usr/bin/jq-latest https://github.com/stedolan/jq/releases/downlo
 chmod 755 /usr/bin/jq-latest
 
 #
-## Install yq
+## Install yq 4
 #
 
 echo 
@@ -127,8 +127,20 @@ VER=$( curl -Ls -o /dev/null -w %{url_effective} https://github.com/mikefarah/yq
 echo "Installing yq-${VER}"
 echo
 
+curl -k -s -Lo /usr/bin/yq4 https://github.com/mikefarah/yq/releases/download/${VER}/yq_linux_amd64
+chmod 755 /usr/bin/yq4
+
+#
+## Install yq 3.4.1 
+#
+
+VER="3.4.1"
+echo "Installing yq-${VER}"
+echo
+
 curl -k -s -Lo /usr/bin/yq https://github.com/mikefarah/yq/releases/download/${VER}/yq_linux_amd64
 chmod 755 /usr/bin/yq
+ln -s /usr/bin/yq /usr/bin/yq3
 
 #
 ## Install awscli
