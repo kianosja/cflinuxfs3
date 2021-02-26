@@ -9,7 +9,7 @@ echo "Installing latest cf-cli"
 wget -q -O - https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key | apt-key add -
 echo "deb https://packages.cloudfoundry.org/debian stable main" | tee /etc/apt/sources.list.d/cloudfoundry-cli.list
 apt-get update
-apt-get install -y cf-cli
+apt-get install -y cf7-cli
 apt-get install -y dnsutils
 apt-get install -y gettext-base
 apt-get install -y bind9utils
@@ -22,9 +22,11 @@ apt-get clean
 
 echo ""
 echo "Installing latest skopeo"
+
 . /etc/os-release
 echo "deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_${VERSION_ID}/ /" | tee /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list
 curl -L https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_${VERSION_ID}/Release.key | apt-key add -
+
 apt update
 apt -y install skopeo
 apt clean
@@ -35,6 +37,7 @@ apt clean
 
 echo ""
 echo "Installing latest mc"
+
 wget --no-check-certificate -q -O /usr/bin/mc https://dl.minio.io/client/mc/release/linux-amd64/mc
 chmod 755 /usr/bin/mc
 
@@ -43,86 +46,55 @@ chmod 755 /usr/bin/mc
 ##
 
 echo ""
-echo "Installing bosh 5.4.0"
-VER="5.4.0"
-curl -k -s -Lo /usr/bin/bosh https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-${VER}-linux-amd64
+
+# Cut the v off this VER and manually add it where needed as the VER in the path has the v but not the VER in the filename
+VER=$( curl -Ls -o /dev/null -w %{url_effective} https://github.com/cloudfoundry/bosh-cli/releases/latest | awk -F / '{ print $NF }' | cut -c 2- )
+echo "Installing latest bosh version ($VER) as bosh"
+
+curl -k -s -Lo /usr/bin/bosh https://github.com/cloudfoundry/bosh-cli/releases/download/v${VER}/bosh-cli-${VER}-linux-amd64
 chmod 755 /usr/bin/bosh
-
-echo "Temporarily locking bosh-latest at 5.5.1 until latest issue with cli-current-version file is fixed"
-VER="5.5.1"
-curl -k -s -Lo /usr/bin/bosh-latest https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-${VER}-linux-amd64
-chmod 755 /usr/bin/bosh-latest
-
-echo "Installing latest bosh version ($VER) as bosh-test"
-VER=`curl -Ls -o /dev/null -w %{url_effective} https://github.com/cloudfoundry/bosh-cli/releases/latest | awk -F / '{ print $NF }' | cut -c 2-`
-curl -k -s -Lo /usr/bin/bosh-test https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-${VER}-linux-amd64
-chmod 755 /usr/bin/bosh-test
 
 ##
 ## Install govc
 ##
 
 echo ""
-echo "Installing govc 0.15.0"
-VER="v0.15.0"
-curl -k -s -Lo /usr/bin/govc.gz https://github.com/vmware/govmomi/releases/download/${VER}/govc_linux_amd64.gz
-gzip -d /usr/bin/govc.gz
-chmod 755 /usr/bin/govc
+VER=$( curl -Ls -o /dev/null -w %{url_effective} https://github.com/vmware/govmomi/releases/latest | awk -F / '{ print $NF }' )
+echo "Installing govc (${VER}) as /usr/bin/govc" 
 
-# Now get the latest version for testing
-
-VER=`curl -L -k -s https://github.com/vmware/govmomi/releases/latest | grep "<title>Release" | awk '{ print $2 }'`
-echo "Installing latest govc ($VER) as /usr/bin/govc-latest" 
-echo ""
 curl -k -s -Lo /tmp/govc.gz https://github.com/vmware/govmomi/releases/download/${VER}/govc_linux_amd64.gz
+
 gzip -d /tmp/govc.gz
 chmod 755 /tmp/govc
-mv /tmp/govc /usr/bin/govc-latest
+mv /tmp/govc /usr/bin/govc
 
 ##
 ## Install om-linux
 ##
 
 echo ""
-echo "Installing om-linux 0.42.0"
-#VER=`curl -L -k -s https://github.com/pivotal-cf/om/releases/latest | grep "<title>Release" | awk '{ print $2 }'`
-VER="0.42.0"
+VER=$( curl -Ls -o /dev/null -w %{url_effective} https://github.com/pivotal-cf/om/releases/latest | awk -F / '{ print $NF }' )
+echo "Installing om-linux (${VER}) as /usr/bin/om-linux"
+
 curl -k -s -Lo /usr/bin/om-linux https://github.com/pivotal-cf/om/releases/download/${VER}/om-linux
 chmod 755 /usr/bin/om-linux
-
-# Now install the latest
-#
-# Note binary name changed at 2.2.0 to om-linux-VER
-
-#VER=`curl -L -k -s https://github.com/pivotal-cf/om/releases/latest | grep "<title>Release" | awk '{ print $2 }'`
-VER=4.8.0
-echo "Installing latest ($VER) om-linux as om-linux-latest"
-echo ""
-curl -k -s -Lo /tmp/om-linux https://github.com/pivotal-cf/om/releases/download/${VER}/om-linux-${VER}
-chmod 755 /tmp/om-linux
-mv /tmp/om-linux /usr/bin/om-linux-latest
 
 #
 ## Install jq
 # 
 
 echo ""
-echo "Installing jq-1.5"
-curl -k -s -Lo /usr/bin/jq https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64
+VER=$( curl -Ls -o /dev/null -w %{url_effective} https://github.com/stedolan/jq/releases/latest | awk -F / '{ print $NF }' )
+echo "Installing latest jq (${VER})as jq"
+
+curl -k -s -Lo /usr/bin/jq https://github.com/stedolan/jq/releases/download/${VER}/jq-linux64
 chmod 755 /usr/bin/jq
-
-# Now install the latest
-
-echo "Installing latest jq as jq-latest"
-echo ""
-curl -k -s -Lo /usr/bin/jq-latest https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
-chmod 755 /usr/bin/jq-latest
 
 #
 ## Install yq 4
 #
 
-echo 
+echo ""
 VER=$( curl -Ls -o /dev/null -w %{url_effective} https://github.com/mikefarah/yq/releases/latest | awk -F / '{ print $NF }' )
 echo "Installing yq-${VER}"
 echo
@@ -134,7 +106,8 @@ chmod 755 /usr/bin/yq4
 ## Install yq 3.4.1 
 #
 
-VER="3.4.1"
+echo ""
+VER="v3.4.1"
 echo "Installing yq-${VER}"
 echo
 
@@ -157,25 +130,18 @@ rm -r -f awscli-bundle
 ## Looks like the uaac client was removed - add it back in as we use it
 #
 
-echo "Installing uaac"
 echo ""
+echo "Installing uaac via gem"
+
 gem install cf-uaac
-
-#
-## Install kubernetes packages
-#
-
-#echo "Installing latest kubectl"
-#echo ""
-#curl -k -s -Lo /usr/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
-#chmod uog+rx /usr/bin/kubectl
 
 #
 ## Install jfrog cli
 #
 
-echo "Installing jfrog cli"
 echo ""
+echo "Installing jfrog cli"
+
 curl -fL https://getcli.jfrog.io | sh
 mv jfrog /usr/bin/jfrog
 chmod uog+rx /usr/bin/jfrog
@@ -184,9 +150,10 @@ chmod uog+rx /usr/bin/jfrog
 ### Install credhub-cli
 #
 
-VER=`curl -Ls -o /dev/null -w %{url_effective} https://github.com/cloudfoundry-incubator/credhub-cli/releases/latest | awk -F / '{ print $NF }'`
-echo "Installing latest credhub-cli ${VER}"
 echo ""
+VER=$( curl -Ls -o /dev/null -w %{url_effective} https://github.com/cloudfoundry-incubator/credhub-cli/releases/latest | awk -F / '{ print $NF }' )
+echo "Installing latest credhub-cli ${VER}"
+
 curl -k -s -Lo ./credhub.tar.gz https://github.com/cloudfoundry-incubator/credhub-cli/releases/download/${VER}/credhub-linux-${VER}.tgz
 tar xvzf credhub.tar.gz 
 mv credhub /usr/bin/credhub
@@ -196,9 +163,10 @@ chmod 755 /usr/bin/credhub
 ### Install ytt
 #
 
-VER=`curl -Ls -o /dev/null -w %{url_effective} https://github.com/k14s/ytt/releases/latest | awk -F / '{ print $NF }'`
+echo ""
+VER=$( curl -Ls -o /dev/null -w %{url_effective} https://github.com/k14s/ytt/releases/latest | awk -F / '{ print $NF }' )
 echo "Installing latest ytt (${VER}"
-echo
+
 curl -k -s -Lo /usr/bin/ytt https://github.com/k14s/ytt/releases/download/${VER}/ytt-linux-amd64
 chmod 755 /usr/bin/ytt
 
@@ -206,42 +174,22 @@ chmod 755 /usr/bin/ytt
 ### Install kapp
 #
 
-VER=`curl -Ls -o /dev/null -w %{url_effective} https://github.com/k14s/kapp/releases/latest | awk -F / '{ print $NF }'`
+echo ""
+VER=$( curl -Ls -o /dev/null -w %{url_effective} https://github.com/k14s/kapp/releases/latest | awk -F / '{ print $NF }' )
 echo "Installing latest kapp (${VER}"
-echo
+
 curl -k -s -Lo /usr/bin/kapp https://github.com/k14s/kapp/releases/download/${VER}/kapp-linux-amd64
 chmod 755 /usr/bin/kapp
-
-#
-### Install oc
-#
-
-echo "Installing latest oc"
-echo
-curl -k -s -Lo openshift-client-linux.tar.gz https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-client-linux.tar.gz
-tar xvzf openshift-client-linux.tar.gz
-cp oc /usr/bin/oc
-chmod 755 /usr/bin/oc
-rm kubectl
-rm README*
-
-#
-### Install skopeo
-#
-
-VER=`curl -Ls -o /dev/null -w %{url_effective} https://github.com/containers/skopeo/releases/latest | awk -F / '{ print $NF }'`
-echo "Installing latest skopeo (${VER})"
-echo
 
 #
 ### Install hub
 #
 
-VER=`curl -Ls -o /dev/null -w %{url_effective} https://github.com/github/hub/releases/latest | awk -F / '{ print $NF }'`
-VER_NO_V=$(echo ${VER} | cut -c 2-)
+echo ""
+VER=$( curl -Ls -o /dev/null -w %{url_effective} https://github.com/github/hub/releases/latest | awk -F / '{ print $NF }' | cut -c 2- )
 echo "Installing latest hub (${VER})"
-echo 
-curl -k -s -Lo hub.tar.gz https://github.com/github/hub/releases/download/${VER}/hub-linux-amd64-${VER_NO_V}.tgz
+ 
+curl -k -s -Lo hub.tar.gz https://github.com/github/hub/releases/download/v${VER}/hub-linux-amd64-${VER}.tgz
 tar xvzf hub.tar.gz
 cp hub-linux-amd64-${VER_NO_V}/bin/hub /usr/bin/hub
 chmod 755 /usr/bin/hub
