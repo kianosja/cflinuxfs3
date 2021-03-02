@@ -76,7 +76,7 @@ echo ""
 VER=$( curl -Ls -o /dev/null -w %{url_effective} https://github.com/pivotal-cf/om/releases/latest | awk -F / '{ print $NF }' )
 echo "Installing om-linux (${VER}) as /usr/bin/om-linux"
 
-curl -k -s -Lo /usr/bin/om-linux https://github.com/pivotal-cf/om/releases/download/${VER}/om-linux
+curl -k -s -Lo /usr/bin/om-linux https://github.com/pivotal-cf/om/releases/download/${VER}/om-linux-${VER}
 chmod 755 /usr/bin/om-linux
 
 #
@@ -191,6 +191,6 @@ echo "Installing latest hub (${VER})"
  
 curl -k -s -Lo hub.tar.gz https://github.com/github/hub/releases/download/v${VER}/hub-linux-amd64-${VER}.tgz
 tar xvzf hub.tar.gz
-cp hub-linux-amd64-${VER_NO_V}/bin/hub /usr/bin/hub
+cp hub-linux-amd64-${VER}/bin/hub /usr/bin/hub
 chmod 755 /usr/bin/hub
 
