@@ -119,12 +119,12 @@ ln -s /usr/bin/yq /usr/bin/yq3
 ## Install awscli
 #
 
-echo ""
-echo "Installing latest aws"
-curl -k -s -Lo awscli-bundle.zip https://s3.amazonaws.com/aws-cli/awscli-bundle.zip
-unzip awscli-bundle.zip
-./awscli-bundle/install -i /usr/local/aws -b /usr/bin/aws
-rm -r -f awscli-bundle
+#echo ""
+#echo "Installing latest aws"
+#curl -k -s -Lo awscli-bundle.zip https://s3.amazonaws.com/aws-cli/awscli-bundle.zip
+#unzip awscli-bundle.zip
+#./awscli-bundle/install -i /usr/local/aws -b /usr/bin/aws
+#rm -r -f awscli-bundle
 
 #
 ## Looks like the uaac client was removed - add it back in as we use it
