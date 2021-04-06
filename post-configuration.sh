@@ -107,7 +107,7 @@ chmod 755 /usr/bin/yq4
 #
 
 echo ""
-VER="v3.4.1"
+VER="3.4.1"
 echo "Installing yq-${VER}"
 echo
 
