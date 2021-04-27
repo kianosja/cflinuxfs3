@@ -62,11 +62,11 @@ echo ""
 VER=$( curl -Ls -o /dev/null -w %{url_effective} https://github.com/vmware/govmomi/releases/latest | awk -F / '{ print $NF }' )
 echo "Installing govc (${VER}) as /usr/bin/govc" 
 
-curl -k -s -Lo /tmp/govc.gz https://github.com/vmware/govmomi/releases/download/${VER}/govc_linux_amd64.gz
+curl -k -s -Lo ./govc.tar.gz https://github.com/vmware/govmomi/releases/download/${VER}/govc_Linux_x86_64.tar.gz
 
-gzip -d /tmp/govc.gz
-chmod 755 /tmp/govc
-mv /tmp/govc /usr/bin/govc
+tar xvzf govc.tar.gz
+chmod 755 govc
+mv govc /usr/bin/govc
 
 ##
 ## Install om-linux
